@@ -4,25 +4,19 @@ This repository contains the YOLOv8 object detection web service, that detects c
 
 The DentalAI dataset used to train the model. You can download it from here: https://datasetninja.com/dentalai. If you want to run your own training process, you need to convert it to the YOLOv8 format, using the script in the `convert.ipynb` notebook.
 
-This is a source code for the [Teeth caries detection using YOLOv8 neural network](https://dev.to/andreygermanov/teeth-caries-detection-using-yolov8-neural-network-3fap). Read it to learn in detail how this code created and works.
-
 ## Contents
 
 * `convert.ipynb` - The Supervisely to YOLOv8 converter, used to convert the dataset to YOLOv8 format
 * `train.ipynb` - The code to train the YOLOv8 model using converted dataset
 * `predict.ipynb` - The code, that can be used to run and visualize caries detection on custom images, using the trained model
 * `best.pt` - The trained YOLOv8 model on 30 epochs to detect caries, cavity and cracks on teeth
-* `object_detector.py` - The backend of a web service
-* `index.html` - The frontend of a web service
+* `object_detector.py` - The backend of the web service
+* `index.html` - The frontend of the web service
 * `caries.jpg` - Sample teeth with caries image
 
-## Demo
-
-Watch this video: https://youtu.be/OzpPIsxB_4U
 
 ## Install
 
-* Clone this repository
 * Install dependencies: **pip3 install -r requirements.txt**
 
 ## Run web service
