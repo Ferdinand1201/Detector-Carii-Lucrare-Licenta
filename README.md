@@ -1,31 +1,30 @@
-# The caries detection web-service using the YOLOv8 neural network
+# Serviciul web de detectare a cariilor utilizând rețeaua neuronală YOLOv8
 
-This repository contains the YOLOv8 object detection web service, that detects caries and other teeth deceases on images. Also, it contains additional scripts, that can be used to prepare the source dataset, to train the model and run test predictions.
+Acest repository conține serviciul web de detectare a obiectelor YOLOv8, care detectează cariile și alte afecțiuni dentare pe imagini. De asemenea, conține scripturi suplimentare care pot fi utilizate pentru a pregăti setul de date sursă, pentru a antrena modelul și pentru a efectua predicții de testare.
 
-The DentalAI dataset used to train the model. You can download it from here: https://datasetninja.com/dentalai. If you want to run your own training process, you need to convert it to the YOLOv8 format, using the script in the `convert.ipynb` notebook.
+Dataset-ul DentalAI a fost utilizat pentru a antrena modelul. Îl poți descărca de aici: https://datasetninja.com/dentalai. Dacă vrei să rulezi propriul proces de antrenare, trebuie să-l convertești în formatul YOLOv8 folosind scriptul din notebook-ul convert.ipynb.
+## Conținut
 
-## Contents
-
-* `convert.ipynb` - The Supervisely to YOLOv8 converter, used to convert the dataset to YOLOv8 format
-* `train.ipynb` - The code to train the YOLOv8 model using converted dataset
-* `predict.ipynb` - The code, that can be used to run and visualize caries detection on custom images, using the trained model
-* `best.pt` - The trained YOLOv8 model on 30 epochs to detect caries, cavity and cracks on teeth
-* `object_detector.py` - The backend of the web service
-* `index.html` - The frontend of the web service
-* `caries.jpg` - Sample teeth with caries image
+*  convert.ipynb - Converterul de la Supervisely la YOLOv8, folosit pentru a converte setul de date în formatul YOLOv8
+*  train.ipynb - Codul pentru antrenarea modelului YOLOv8 utilizând setul de date convertit
+*  predict.ipynb - Codul care poate fi utilizat pentru a rula și vizualiza detectarea cariilor pe imagini personalizate, folosind modelul antrenat
+*  best.pt - Modelul YOLOv8 antrenat pe 30 de epoci pentru detectarea cariilor, cavităților și crăpăturilor pe dinți
+*  object_detector.py - Backend-ul serviciului web
+*  index.html - Frontend-ul serviciului web 
+*  caries.jpg - Imagine exemplu cu dinți și carii
 
 
-## Install
+## Instalare
 
-* Install dependencies: **pip3 install -r requirements.txt**
+Instalează dependențele: pip3 install -r requirements.txt
 
-## Run web service
+## Rulare serviciu web
 
-* Ensure that the `object_detector.py`, `index.html` and `best.pt` files located in the same folder
-* Run
+* Asigură-te că fișierele object_detector.py, index.html și best.pt se află în aceeași folder
+* Rulează
 
 ```
 python object_detector.py
 ```
 
-The web interface will be available on **http://localhost:8080** address. You can upload the teeth image and see if it contains caries.
+Interfața web va fi disponibilă la adresa http://localhost:8080. Poți încărca o imagine cu dinți și verifica dacă conține carii.
