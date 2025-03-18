@@ -2,145 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YOLOv8 Object Detection</title>
     <style>
-        body {
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f9fafb;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        h1 {
-            font-size: 26px;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        #uploadInput {
-            display: inline-block;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 500;
-            color: white;
-            background: linear-gradient(90deg, #4caf50, #43a047);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        #uploadInput:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #uploadInput:active {
-            transform: scale(0.98);
-        }
-
-        canvas {
-            display: block;
-            margin: 20px auto 0;
-            border-radius: 12px;
-            border: 2px solid #e0e0e0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-        }
-
-        .description {
-            color: #666;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .loader {
-            margin: 20px auto;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #4caf50;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+      canvas {
+          display:block;
+          border: 1px solid black;
+          margin-top:10px;
+      }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>YOLOv8 Object Detection</h1>
-        <label for="uploadInput" id="uploadLabel">
-            <input id="uploadInput" type="file" style="display:none"/>
-            <span id="buttonText">Select Image</span>
-        </label>
-        <div class="loader" id="loader" style="display: none;"></div>
-        <canvas></canvas>
-        <p class="description">Upload an image to detect objects!</p>
-    </div>
-
+    <input id="uploadInput" type="file"/>
+    <canvas></canvas>
     <script>
-        const input = document.getElementById("uploadInput");
-        const loader = document.getElementById("loader");
-        const buttonText = document.getElementById("buttonText");
+      /**
+       * "Upload" button onClick handler: uploads selected image file
+       * to backend, receives array of detected objects
+       * and draws them on top of image
+       */
+       const input = document.getElementById("uploadInput");
+       input.addEventListener("change",async(event) => {
+           const data = new FormData();
+           data.append("image_file",event.target.files[0],"image_file");
+           const response = await fetch("/detect",{
+               method:"post",
+               body:data
+           });
+           const boxes = await response.json();
+           draw_image_and_boxes(event.target.files[0],boxes);
+       })
 
-        input.addEventListener("change", async (event) => {
-            buttonText.textContent = "Processing...";
-            loader.style.display = "block";
-
-            const data = new FormData();
-            data.append("image_file", event.target.files[0], "image_file");
-            
-            const response = await fetch("/detect", {
-                method: "post",
-                body: data
-            });
-
-            const boxes = await response.json();
-            drawImageAndBoxes(event.target.files[0], boxes);
-
-            loader.style.display = "none";
-            buttonText.textContent = "Select Image";
-        });
-
-        function drawImageAndBoxes(file, boxes) {
-            const img = new Image();
-            img.src = URL.createObjectURL(file);
-            img.onload = () => {
-                const canvas = document.querySelector("canvas");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-
-                ctx.strokeStyle = "#4caf50";
-                ctx.lineWidth = 3;
-                ctx.font = "16px Arial";
-                ctx.fillStyle = "#4caf50";
-
-                boxes.forEach(([x1, y1, x2, y2, label]) => {
-                    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-                    ctx.fillText(label, x1 + 5, y1 - 5);
-                });
-            };
-        }
+      /**
+       * Function draws the image from provided file
+       * and bounding boxes of detected objects on
+       * top of the image
+       * @param file Uploaded file object
+       * @param boxes Array of bounding boxes in format [[x1,y1,x2,y2,object_type,probability],...]
+       */
+      function draw_image_and_boxes(file,boxes) {
+          const img = new Image()
+          img.src = URL.createObjectURL(file);
+          img.onload = () => {
+              const canvas = document.querySelector("canvas");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img,0,0);
+              ctx.strokeStyle = "#00FF00";
+              ctx.lineWidth = 3;
+              ctx.font = "18px serif";
+              boxes.forEach(([x1,y1,x2,y2,label]) => {
+                  ctx.strokeRect(x1,y1,x2-x1,y2-y1);
+              });
+          }
+      }
     </script>
 </body>
 </html>
