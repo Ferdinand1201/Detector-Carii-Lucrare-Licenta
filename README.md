@@ -24,11 +24,11 @@ Acest proiect conține codul sursă și resursele aferente sistemului dezvoltat 
 1. Asigurați-vă că toate fișierele sunt în același director.
 2. Instalați pachetele necesare rulând comanda:
 
-<pre> ``` pip install -r requirements.txt ``` </pre>
+<pre>  pip install -r requirements.txt  </pre>
 
 3. Porniți aplicația cu:
 
-<pre> ``` python object_detector.py ``` </pre>
+<pre>  python object_detector.py  </pre>
 
 
 4. Interfața va fi disponibilă la adresa:  
