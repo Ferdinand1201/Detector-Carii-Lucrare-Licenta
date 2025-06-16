@@ -1,30 +1,52 @@
-# Serviciul web de detectare a cariilor utilizând rețeaua neuronală YOLOv8
+# Sistem AI explicabil pentru detectarea cariilor dentare
 
-Acest repository conține serviciul web de detectare a obiectelor YOLOv8, care detectează cariile și alte afecțiuni dentare pe imagini. De asemenea, conține scripturi suplimentare care pot fi utilizate pentru a pregăti setul de date sursă, pentru a antrena modelul și pentru a efectua predicții de testare.
+Acest proiect conține codul sursă și resursele aferente sistemului dezvoltat în cadrul lucrării de licență. Aplicația utilizează modelul YOLOv8 pentru detecția automată a cariilor dentare din imagini intraorale, combinat cu un clasificator CNN (ResNet18) care analizează detaliat fiecare regiune decupată. Pentru explicabilitatea deciziilor, sunt integrate metodele Grad-CAM++ și Integrated Gradients, cu rezultate vizuale afișate în interfața web.
 
-Dataset-ul DentalAI a fost utilizat pentru a antrena modelul. Îl poți descărca de aici: https://datasetninja.com/dentalai. Dacă vrei să rulezi propriul proces de antrenare, trebuie să-l convertești în formatul YOLOv8 folosind scriptul din notebook-ul convert.ipynb.
-## Conținut
+## Funcționalități
 
-*  convert.ipynb - Converterul de la Supervisely la YOLOv8, folosit pentru a converte setul de date în formatul YOLOv8
-*  train.ipynb - Codul pentru antrenarea modelului YOLOv8 utilizând setul de date convertit
-*  predict.ipynb - Codul care poate fi utilizat pentru a rula și vizualiza detectarea cariilor pe imagini personalizate, folosind modelul antrenat
-*  best.pt - Modelul YOLOv8 antrenat pe 30 de epoci pentru detectarea cariilor, cavităților și crăpăturilor pe dinți
-*  object_detector.py - Backend-ul serviciului web
-*  index.html - Frontend-ul serviciului web 
-*  caries.jpg - Imagine exemplu cu dinți și carii
+- Detecția automată a cariilor din imagini dentare, utilizând modelul YOLOv8.
+- Clasificarea fiecărei regiuni suspecte în "carie" sau "non-carie" cu ajutorul unei rețele CNN.
+- Generarea automată de hărți vizuale explicative (Grad-CAM++, Integrated Gradients) pentru fiecare regiune.
+- Interfață web interactivă cu suport pentru zoom, mod întunecat și afișare organizată a rezultatelor.
 
+## Structura proiectului
 
-## Instalare
+- `object_detector.py` – codul principal backend Flask, gestionează detecția, clasificarea și explicabilitatea
+- `cnn_explainer.py` – modul pentru generarea explicațiilor vizuale
+- `train_caries_classifier.py` – script de antrenare a clasificatorului CNN
+- `index.html` – interfața web locală
+- `best.pt` – modelul YOLOv8 antrenat
+- `model_cnn.pth` – modelul CNN antrenat
+- `requirements.txt` – lista pachetelor necesare pentru rulare
 
-Instalează dependențele: pip3 install -r requirements.txt
+## Rulare aplicație locală
 
-## Rulare serviciu web
+1. Asigurați-vă că toate fișierele sunt în același director.
+2. Instalați pachetele necesare rulând comanda:
 
-* Asigură-te că fișierele object_detector.py, index.html și best.pt se află în aceeași folder
-* Rulează
+pip install -r requirements.txt
 
-```
+3. Porniți aplicația cu:
+
 python object_detector.py
-```
 
-Interfața web va fi disponibilă la adresa http://localhost:8080. Poți încărca o imagine cu dinți și verifica dacă conține carii.
+
+4. Interfața va fi disponibilă la adresa:  
+   `http://localhost:8080`
+
+## Contribuții proprii
+
+Proiectul este dezvoltat pe baza unui repository open-source, fiind extins semnificativ prin:
+
+- integrarea unui clasificator CNN ResNet18 pentru analiza regiunilor detectate de YOLOv8;
+- dezvoltarea unui modul XAI cu generare automată a hărților Grad-CAM++ și Integrated Gradients;
+- optimizarea și modularizarea codului sursă;
+- dezvoltarea unei interfețe web intuitive cu funcționalități avansate (zoom pe regiuni, validare fișiere, dark mode).
+
+Aceste contribuții au fost realizate sub coordonarea prof. univ. dr. Darian Onchiș, în cadrul Facultății de Matematică și Informatică, Universitatea de Vest din Timișoara.
+
+## Observații
+
+Aplicația este destinată evaluării în cadrul susținerii lucrării de licență și poate fi rulată local fără acces la internet sau servicii externe.
+
+
